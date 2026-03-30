@@ -1,0 +1,82 @@
+-- Veritabanını oluştur ve seç
+CREATE DATABASE KutuphaneSistemi;
+GO
+USE KutuphaneSistemi;
+GO
+
+-- 1. Seviye: Hiçbir yere bağımlı olmayan tablolar
+CREATE TABLE Adresler(
+    adresNo INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    sehir NVARCHAR(50) NOT NULL,
+    mahalle NVARCHAR(50),
+    binaNo INT,
+    postakodu INT,
+    ulke NVARCHAR(50) NOT NULL,
+    cadde NVARCHAR(50)
+);
+
+CREATE TABLE kategori(
+    kategoriNo INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    kategoriAdi NVARCHAR(100) NOT NULL
+);
+
+CREATE TABLE yazarlar(
+    yazarNo INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    yazarAdi NVARCHAR(50) NOT NULL,
+    yazarSoyadi NVARCHAR(25) NOT NULL
+);
+
+CREATE TABLE kitaplar(
+    ISBN NVARCHAR(50) NOT NULL PRIMARY KEY,
+    kitapAdi NVARCHAR(50) NOT NULL,
+    sayfaSayisi INT,
+    YayinTarihi DATETIME
+);
+
+-- 2. Seviye: Foreign Key (Dış Anahtar) içeren tablolar
+CREATE TABLE Uyeler(
+    uyeNo INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    uyeAdi NVARCHAR(100) NOT NULL,
+    uyeSoyadi NVARCHAR(100) NOT NULL,
+    cinsiyet CHAR(2),
+    telefon NVARCHAR(50),
+    eposta NVARCHAR(50),
+    adresNo INT,
+    CONSTRAINT FK_Uyeler_Adresler FOREIGN KEY(adresNo) REFERENCES Adresler(adresNo)
+);
+
+CREATE TABLE kutuphane (
+    kutuphaneNo INT PRIMARY KEY IDENTITY(1,1) NOT NULL, -- Identity eklendi
+    kutuphaneIsmi NVARCHAR(50),
+    Aciklama NVARCHAR(50),
+    adresNo INT,
+    CONSTRAINT FK_Kutuphane_Adresler FOREIGN KEY (adresNo) REFERENCES Adresler(adresNo)
+);
+
+-- 3. Seviye: İlişki (Ara) Tabloları
+CREATE TABLE emanet(
+    emanetNo INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    emanetTarihi DATETIME,
+    teslimTarihi DATETIME,
+    uyeNo INT FOREIGN KEY REFERENCES Uyeler(uyeNo),
+    ISBN NVARCHAR(50) FOREIGN KEY REFERENCES Kitaplar(ISBN)
+);
+
+CREATE TABLE kategori_kitap(
+    id INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    ISBN NVARCHAR(50) FOREIGN KEY REFERENCES kitaplar (ISBN),
+    kategoriNo INT FOREIGN KEY REFERENCES kategori (kategoriNo)
+);
+
+CREATE TABLE kitap_yazarlar(
+    id INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    ISBN NVARCHAR(50) FOREIGN KEY REFERENCES kitaplar (ISBN),
+    yazarNo INT FOREIGN KEY REFERENCES yazarlar (yazarNo)
+);
+
+CREATE TABLE kitap_kutuphane(
+    id INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    miktar INT NOT NULL,
+    ISBN NVARCHAR(50) FOREIGN KEY REFERENCES kitaplar (ISBN),
+    kutuphaneNo INT FOREIGN KEY REFERENCES kutuphane (kutuphaneNo)
+);
