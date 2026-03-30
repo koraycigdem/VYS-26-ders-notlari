@@ -1,0 +1,74 @@
+USE KutuphaneSistemi;
+GO
+
+SELECT * FROM Adresler;
+SELECT * FROM kategori;
+SELECT * FROM yazarlar;
+SELECT * FROM kitaplar;
+
+SELECT * FROM Uyeler;
+SELECT * FROM kutuphane;
+SELECT * FROM emanet;
+
+SELECT * FROM kategori_kitap;
+SELECT * FROM kitap_yazarlar;
+SELECT * FROM kitap_kutuphane;
+
+INSERT INTO Adresler (sehir, mahalle, binaNo, postakodu, ulke, cadde)
+VALUES 
+('İstanbul', 'Kadıköy', 15, 34000, 'Türkiye', 'Moda Caddesi'),
+('Ankara', 'Çankaya', 22, 06000, 'Türkiye', 'Atatürk Bulvarı');
+
+INSERT INTO kategori (kategoriAdi)
+VALUES 
+('Bilim Kurgu'),
+('Klasik Roman');
+
+INSERT INTO yazarlar (yazarAdi, yazarSoyadi)
+VALUES 
+('George', 'Orwell'),
+('Sabahattin', 'Ali');
+
+INSERT INTO kitaplar (ISBN, kitapAdi, sayfaSayisi, YayinTarihi)
+VALUES 
+('131', '1984', 328, '1949-06-08'),
+('132', 'Kürk Mantolu Madonna', 160, '1943-01-01');
+
+
+
+
+INSERT INTO Uyeler (uyeAdi, uyeSoyadi, cinsiyet, telefon, eposta, adresNo)
+VALUES 
+('Koray', 'Çiğdem', 'E', '5317593673', 'koray@gmail.com', 1),
+('Arda', 'Şahin', 'E', '5551234567', 'arda@gmail.com', 2);
+
+
+INSERT INTO kutuphane (kutuphaneIsmi, Aciklama, adresNo)
+VALUES 
+('Merkez Kütüphanesi', 'Ana Bina', 1),
+('Halk Kütüphanesi', 'Şube', 2);
+
+INSERT INTO emanet (emanetTarihi, teslimTarihi, uyeNo, ISBN)
+VALUES 
+('2023-10-01', '2023-10-15', 1, '978-0451524935'),
+('2023-10-20', NULL, 2, '978-9753638029'); -- Henüz teslim edilmemiş
+
+
+
+
+
+INSERT INTO kategori_kitap (ISBN, kategoriNo)
+VALUES 
+('131', 1), -- 1984 -> Bilim Kurgu
+('132', 2); -- Kürk Mantolu Madonna -> Klasik Roman
+
+INSERT INTO kitap_yazarlar (ISBN, yazarNo)
+VALUES 
+('131', 1), -- 1984 -> George Orwell
+('132', 2); -- Kürk Mantolu Madonna -> Sabahattin Ali
+
+INSERT INTO kitap_kutuphane (miktar, ISBN, kutuphaneNo)
+VALUES 
+(5, '131', 1), -- Merkez Kütüphanede 5 adet 1984 var
+(3, '132', 2); -- Halk Kütüphanesinde 3 adet Kürk Mantolu Madonna var
+
