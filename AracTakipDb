@@ -1,0 +1,71 @@
+use araçTakip;
+
+CREATE TABLE Musteri (
+Mno INT PRIMARY KEY IDENTITY(1,1),
+Madi VARCHAR(50),
+Msoyadi VARCHAR(50),
+Madres VARCHAR(100),
+Mtelefon VARCHAR(20)
+);
+
+INSERT INTO Musteri (Madi, Msoyadi, Madres, Mtelefon) VALUES
+('Turgut', 'Özseven', 'Turhal/Tokat', '121646516416'),
+('Mustafa', 'Çağlayan', 'Meram/Konya', '465245212323'),
+('Ahmet', 'Kara', 'Zile/Tokat', '472376298362'),
+('Murat', 'Beyaz', 'Turhal/Tokat', '385235293859'),
+('Elif', 'Kurt', 'Beşiktaş/İstanbul', '948752835293'),
+('Ayşe', 'Uçar', 'Taşova/Amasya', '487394698292'),
+('Bülent', 'Ayar', 'Turhal/Tokat', '232378572352');
+
+CREATE TABLE Arac (
+Aracno INT PRIMARY KEY IDENTITY(1,1),
+Model INT,
+Marka VARCHAR(50),
+Plaka VARCHAR(20),
+Fiyat DECIMAL(10,2)
+);
+
+INSERT INTO Arac (Model, Marka, Plaka, Fiyat) VALUES
+(2004, 'Fiat Marea', '38 VTYS 3838', 100000.00),
+(2020, 'Renault Megane', '38 VTYS 3839', 110000.00),
+(2010, 'Ford Focus', '38 VTYS 3840', 120000.00),
+(2023, 'Volkswagen Golf', '38 VTYS 3841', 250000.00),
+(2000, 'Opel Astra', '38 VTYS 3842', 82000.00);
+
+CREATE TABLE Satis (
+Satno INT PRIMARY KEY IDENTITY(1,1),
+Mno INT,
+Aracno INT,
+Sat_tarih DATE,
+Sfiyat DECIMAL(10,2),
+FOREIGN KEY (Mno) REFERENCES Musteri(Mno),
+FOREIGN KEY (Aracno) REFERENCES Arac(Aracno)
+);
+
+INSERT INTO Satis (Mno, Aracno, Sat_tarih, Sfiyat) VALUES
+(1, 1, '2022-05-04', 170000.00),
+(4, 5, '2020-06-01', 115000.00),
+(7, 4, '2023-06-15', 270000.00),
+(2, 1, '2010-07-02', 17500.00);
+
+CREATE TABLE Alim (
+Alimno INT PRIMARY KEY IDENTITY(1,1),
+Mno INT,
+Aracno INT,
+Alim_tarih DATE,
+Afiyat DECIMAL(10,2),
+FOREIGN KEY (Mno) REFERENCES Musteri(Mno),
+FOREIGN KEY (Aracno) REFERENCES Arac(Aracno)
+);
+
+INSERT INTO Alim (Mno, Aracno, Alim_tarih, Afiyat) VALUES
+(3, 1, '2022-05-04', 190000.00),
+(6, 1, '2020-06-01', 525000.00),
+(2, 5, '2023-06-15', 370000.00),
+(1, 2, '2010-07-02', 17500.00),
+(5, 3, '2021-08-22', 156800.00);
+
+select * from Musteri;
+select * from Arac;
+select * from Satis;
+select * from Alim;
